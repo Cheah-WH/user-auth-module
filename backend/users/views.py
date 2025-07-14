@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
 
 from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminUserRole
 
 class RegisterView(APIView):
     def post(self, request):
@@ -20,9 +21,17 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 class DashboardView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUserRole]
 
     def get(self, request):
         return Response({
             "message": f"Welcome to the dashboard, {request.user.username}!"
+        })
+
+class UserHomeView(APIView):
+    permission_classes = [IsAuthenticated] # User and Admin can both access this view
+
+    def get(self, request):
+        return Response({
+            "message": f"Hello {request.user.username}, you are logged in as '{request.user.role}'."
         })
