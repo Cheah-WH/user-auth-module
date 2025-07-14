@@ -1,4 +1,4 @@
-==================== Introduction ====================
+========================= Introduction =========================
 
 This is a User Management Module
 The main goal of this project is to implement a user authentication module using React + Django + DRF + JWT
@@ -7,7 +7,9 @@ The functions include account registration, login, logout and protected route ac
 Additional features such as token refresh endpoint, role-based access (user/admin) are also included.
 This README file will guide you how to setup this project on your localhost and also guide you with the API usage.
 
-==================== Setup Instructions ====================
+
+=========================== Setup Instructions ===========================
+
 Note: Python version 3.13.5 or compatible version is required   
 Note: PostgreSQL version 17.5 is required and can be installed at https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 
@@ -32,7 +34,8 @@ Note: PostgreSQL version 17.5 is required and can be installed at https://www.en
 3. Setup the frontend 
 
 
-==================== API Usage ====================
+
+=========================== API Usage ===========================
 
 | Method | Endpoint              | Description        |
 | ------ | --------------------- | ------------------ |
