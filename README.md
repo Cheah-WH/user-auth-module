@@ -32,7 +32,10 @@ Note: PostgreSQL version 17.5 is required and can be installed at https://www.en
     2.7 Start the backend server with bash command: python manage.py runserver
 
 3. Setup the frontend 
-
+    3.1 Go to the frontend folder with bash command: cd frontend/frontend
+    3.2 Install the dependencies: npm install 
+    3.3 Start the frontend service: npm start
+    3.4 Go to http://localhost:3000 with a browser
 
 
 =========================== API Usage ===========================
