@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { refreshToken } from '../utils/auth';
 
 function Dashboard() {
     const [data, setData] = useState('');
@@ -13,25 +14,30 @@ function Dashboard() {
             navigate('/');
             return;
         }
-        const fetchDashboard = async () => {
+        const fetchDashboard = async (token) => {
             try {
                 const res = await axios.get('http://localhost:8000/api/dashboard/', {
                     headers: {
-                        Authorization: `Bearer ${accessToken}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
                 setData(res.data.message);
             } catch (err) {
-                alert(
-                    err.response?.data?.detail
-                        ? `Access denied: ${err.response.data.detail}`
-                        : 'Access denied: An unexpected error occurred.'
-                );
-                setData('Unauthorized or not admin');
-                navigate('/user-home');
+                const newToken = await refreshToken();
+                if (newToken) {
+                    fetchDashboard(newToken)
+                } else {
+                    alert(
+                        err.response?.data?.detail
+                            ? `Access denied: ${err.response.data.detail}`
+                            : 'Access denied: An unexpected error occurred.'
+                    );
+                    setData('Unauthorized or not admin');
+                    navigate('/user-home');
+                }
             }
         };
-        fetchDashboard();
+        fetchDashboard(accessToken);
     }, [navigate]);
 
     return (

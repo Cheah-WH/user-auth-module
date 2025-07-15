@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { refreshToken } from '../utils/auth';
 
 function UserHome() {
     const [data, setData] = useState('');
@@ -14,25 +15,32 @@ function UserHome() {
             return;
         }
 
-        const fetchUserHome = async () => {
+        const fetchUserHome = async (token) => {
             try {
                 const res = await axios.get('http://localhost:8000/api/user-home/', {
                     headers: {
-                        Authorization: `Bearer ${accessToken}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
                 setData(res.data.message);
             } catch (err) {
-                alert(
-                    err.response?.data?.detail
-                        ? `Access denied: ${err.response.data.detail}`
-                        : 'Access denied: An unexpected error occurred.'
-                );
-                setData('Unauthorized');
-                navigate('/');
+                const newToken = await refreshToken();
+                if (newToken) {
+                    fetchUserHome(newToken)
+                }
+                else {
+                    alert(
+                        err.response?.data?.detail
+                            ? `Access denied: ${err.response.data.detail}`
+                            : 'Access denied: An unexpected error occurred.'
+                    );
+                    setData('Unauthorized');
+                    navigate('/');
+                }
+
             }
         };
-        fetchUserHome();
+        fetchUserHome(accessToken);
     }, [navigate]);
 
     const handleLogout = async () => {
